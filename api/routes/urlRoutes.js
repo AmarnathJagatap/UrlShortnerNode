@@ -13,9 +13,9 @@ const urlRouter = express.Router();
 
 urlRouter.post('/shorten', protect, createShortUrlLimiter, createShortUrl);
 urlRouter.get('/analytics/overall', protect, getOverallAnalytics);
-urlRouter.get('/analytics/:alias', getUrlAnalytics);
-urlRouter.get('/analytics/topic/:topic', getTopicAnalytics);
+urlRouter.get('/analytics/:alias',protect, getUrlAnalytics);
+urlRouter.get('/analytics/topic/:topic',protect, getTopicAnalytics);
 
-urlRouter.get('/:alias', redirectShortUrl);
+urlRouter.get('/:alias',protect, redirectShortUrl);
 
 export default urlRouter;
