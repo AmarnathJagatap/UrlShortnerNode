@@ -5,9 +5,9 @@
   "description": "MERN authentication system",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "node api/server.js",
     "server": "nodemon backend/server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\""
   },
   "author": "Brad Traversy",
   "license": "MIT",
