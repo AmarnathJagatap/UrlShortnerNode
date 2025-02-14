@@ -16,6 +16,6 @@ urlRouter.get('/analytics/overall', protect, getOverallAnalytics);
 urlRouter.get('/analytics/:alias',protect, getUrlAnalytics);
 urlRouter.get('/analytics/topic/:topic',protect, getTopicAnalytics);
 
-urlRouter.get('/:alias',protect, redirectShortUrl);
+urlRouter.get('/:alias', redirectShortUrl);
 
 export default urlRouter;
