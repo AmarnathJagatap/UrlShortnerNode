@@ -1,8 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
-import Url from '../models/urlModel.js';
-import moment from 'moment';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -47,12 +45,13 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateToken(res, user._id);
+    const token = generateToken(user._id);
 
-    res.status(201).json({
+    res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
+      token,
     });
   } else {
     res.status(400);
@@ -165,9 +164,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 });
-
-
-
 
 export {
   authUser,

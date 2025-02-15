@@ -1,0 +1,14 @@
+version: '4.38'
+
+services:
+  app:
+    env_file:
+      - .env
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./api:/app/api
+      - /app/node_modules

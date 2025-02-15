@@ -20,7 +20,7 @@ const createShortUrl = async (req, res) => {
       const newUrl = new Url({
         fullUrl: longUrl,
         shortUrl,
-        customAlias: customAlias || null,
+        customAlias: customAlias || undefined,
         topic,
         userEmail,
       });
@@ -157,7 +157,6 @@ const createShortUrl = async (req, res) => {
   const getTopicAnalytics = async (req, res) => {
     try {
       const { topic } = req.params;
-  
       const urls = await Url.find({ topic });
   
       if (urls.length === 0) {
@@ -167,6 +166,8 @@ const createShortUrl = async (req, res) => {
       let totalClicks = 0;
       let uniqueUsersSet = new Set();
       const clicksByDateMap = new Map();
+      const osTypeMap = new Map();
+      const deviceTypeMap = new Map();
   
       const urlAnalytics = urls.map((url) => {
         const analytics = url.analytics;
@@ -180,6 +181,20 @@ const createShortUrl = async (req, res) => {
         analytics.forEach((entry) => {
           const entryDate = moment(entry.timestamp).format('YYYY-MM-DD');
           clicksByDateMap.set(entryDate, (clicksByDateMap.get(entryDate) || 0) + 1);
+  
+          const os = getOS(entry.userAgent);
+          if (!osTypeMap.has(os)) {
+            osTypeMap.set(os, { uniqueClicks: 0, uniqueUsers: new Set() });
+          }
+          osTypeMap.get(os).uniqueClicks++;
+          osTypeMap.get(os).uniqueUsers.add(entry.ipAddress);
+  
+          const device = getDeviceType(entry.userAgent);
+          if (!deviceTypeMap.has(device)) {
+            deviceTypeMap.set(device, { uniqueClicks: 0, uniqueUsers: new Set() });
+          }
+          deviceTypeMap.get(device).uniqueClicks++;
+          deviceTypeMap.get(device).uniqueUsers.add(entry.ipAddress);
         });
   
         return {
@@ -189,18 +204,31 @@ const createShortUrl = async (req, res) => {
         };
       });
   
-      const clicksByDate = Array(7).fill(0).map((_, i) => {
+      const clicksByDate = Array.from({ length: 7 }, (_, i) => {
         const date = moment().subtract(i, 'days').format('YYYY-MM-DD');
         return { date, clickCount: clicksByDateMap.get(date) || 0 };
-      });
+      }).reverse();
+  
+      const osType = Array.from(osTypeMap, ([osName, data]) => ({
+        osName,
+        uniqueClicks: data.uniqueClicks,
+        uniqueUsers: data.uniqueUsers.size,
+      }));
+  
+      const deviceType = Array.from(deviceTypeMap, ([deviceName, data]) => ({
+        deviceName,
+        uniqueClicks: data.uniqueClicks,
+        uniqueUsers: data.uniqueUsers.size,
+      }));
   
       res.json({
         totalClicks,
         uniqueUsers: uniqueUsersSet.size,
         clicksByDate,
+        osType,
+        deviceType,
         urls: urlAnalytics,
       });
-  
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Server error' });
@@ -212,7 +240,6 @@ const createShortUrl = async (req, res) => {
   const getOverallAnalytics = async (req, res) => {
     try {
       const userId = req.user.email;
-  
       const urls = await Url.find({ userEmail: userId });
   
       if (urls.length === 0) {
@@ -233,27 +260,26 @@ const createShortUrl = async (req, res) => {
           const entryDate = moment(entry.timestamp).format('YYYY-MM-DD');
           clicksByDateMap.set(entryDate, (clicksByDateMap.get(entryDate) || 0) + 1);
   
-          const os = entry.os || 'Unknown';
+          const os = getOS(entry.userAgent);
           if (!osTypeMap.has(os)) {
             osTypeMap.set(os, { uniqueClicks: 0, uniqueUsers: new Set() });
           }
           osTypeMap.get(os).uniqueClicks++;
           osTypeMap.get(os).uniqueUsers.add(entry.ipAddress);
   
-          const device = entry.device || 'Unknown';
+          const device = getDeviceType(entry.userAgent);
           if (!deviceTypeMap.has(device)) {
             deviceTypeMap.set(device, { uniqueClicks: 0, uniqueUsers: new Set() });
           }
           deviceTypeMap.get(device).uniqueClicks++;
           deviceTypeMap.get(device).uniqueUsers.add(entry.ipAddress);
         });
-  
       });
   
-      const clicksByDate = Array(7).fill(0).map((_, i) => {
+      const clicksByDate = Array.from({ length: 7 }, (_, i) => {
         const date = moment().subtract(i, 'days').format('YYYY-MM-DD');
         return { date, clickCount: clicksByDateMap.get(date) || 0 };
-      });
+      }).reverse();
   
       const osType = Array.from(osTypeMap, ([osName, data]) => ({
         osName,
@@ -275,13 +301,12 @@ const createShortUrl = async (req, res) => {
         osType,
         deviceType,
       });
-  
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Server error' });
     }
   };
-
+  
 export  {
     createShortUrl,
     redirectShortUrl,
