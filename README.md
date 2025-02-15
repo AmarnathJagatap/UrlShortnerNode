@@ -1,3 +1,44 @@
+### Auth
+---
+
+### 1️⃣ **User Registration** (`POST /api/users`)
+```sh
+curl -X POST https://urlshortner-hqtv.onrender.com/api/users \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "securepassword123"
+}'
+```
+
+---
+
+### 2️⃣ **User Login (Authentication)** (`POST /api/users/auth`)
+```sh
+curl -X POST https://urlshortner-hqtv.onrender.com/api/users/auth \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "johndoe@example.com",
+  "password": "securepassword123"
+}'
+```
+
+---
+
+### 3️⃣ **Google Authentication** (`POST /api/users/googleauth`)
+```sh
+curl -X POST https://urlshortner-hqtv.onrender.com/api/users/googleauth \
+-H "Content-Type: application/json" \
+-d '{
+  "code": "GOOGLE_AUTHORIZATION_CODE"
+}'
+```
+🔹 Replace `"GOOGLE_AUTHORIZATION_CODE"` with the actual authorization code received from Google OAuth flow.  
+
+---
+
+### Url Shortner
 
 ### 1️⃣ **Create a Short URL**
 ```sh
