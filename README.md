@@ -13,7 +13,7 @@ A simple **Node.js** API for shortening URLs, tracking analytics, and user authe
 
 ## **📂 Project Structure**
 ```
-📦 your-project
+📦 UrlShortnerNode
  ┣ 📂 api
  ┃ ┣ 📂 controllers       # API logic (URL & user controllers)
  ┃ ┣ 📂 middleware        # Middleware (Auth, rate limiter)
