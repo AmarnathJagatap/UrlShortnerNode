@@ -1,3 +1,51 @@
+
+### 1️⃣ **Create a Short URL**
+```sh
+curl -X POST https://urlshortner-hqtv.onrender.com/api/url/shorten \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-d '{
+  "longUrl": "https://example.com",
+  "customAlias": "mycustomalias",
+  "topic": "technology"
+}'
+```
+
+---
+
+### 2️⃣ **Redirect a Short URL**
+```sh
+curl -X GET https://urlshortner-hqtv.onrender.com/api/url/mycustomalias
+```
+
+---
+
+### 3️⃣ **Get Analytics for a Specific URL**
+```sh
+curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/mycustomalias \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+---
+
+### 4️⃣ **Get Analytics for a Specific Topic**
+```sh
+curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/topic/technology \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+---
+
+### 5️⃣ **Get Overall Analytics for the User**
+```sh
+curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/overall \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+---
+
+Replace `YOUR_ACCESS_TOKEN` with a valid JWT token if authentication is required.  
+
 ## **Documentation
 ## **https://documenter.getpostman.com/view/16407557/2sAYXEEHqz**
 
