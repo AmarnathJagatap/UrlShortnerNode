@@ -1,7 +1,7 @@
 
 ### 1️⃣ **Create a Short URL**
 ```sh
-curl -X POST https://urlshortner-hqtv.onrender.com/api/url/shorten \
+curl -X POST https://urlshortner-hqtv.onrender.com/shorten \
 -H "Content-Type: application/json" \
 -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
 -d '{
@@ -15,14 +15,14 @@ curl -X POST https://urlshortner-hqtv.onrender.com/api/url/shorten \
 
 ### 2️⃣ **Redirect a Short URL**
 ```sh
-curl -X GET https://urlshortner-hqtv.onrender.com/api/url/mycustomalias
+curl -X GET https://urlshortner-hqtv.onrender.com/mycustomalias
 ```
 
 ---
 
 ### 3️⃣ **Get Analytics for a Specific URL**
 ```sh
-curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/mycustomalias \
+curl -X GET https://urlshortner-hqtv.onrender.com/analytics/mycustomalias \
 -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 
@@ -30,7 +30,7 @@ curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/mycustomalia
 
 ### 4️⃣ **Get Analytics for a Specific Topic**
 ```sh
-curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/topic/technology \
+curl -X GET https://urlshortner-hqtv.onrender.com/analytics/topic/technology \
 -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 
@@ -38,7 +38,7 @@ curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/topic/techno
 
 ### 5️⃣ **Get Overall Analytics for the User**
 ```sh
-curl -X GET https://urlshortner-hqtv.onrender.com/api/url/analytics/overall \
+curl -X GET https://urlshortner-hqtv.onrender.com/analytics/overall \
 -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 
